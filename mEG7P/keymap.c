@@ -14,16 +14,37 @@ enum custom_keycodes {
 };
 
 void matrix_scan_user(void) {
-  // DISABLING ACHORDION FOR NOW AS IT BREAKS HOMEROW MODIFIERS FOR ME
-  // achordion_task();
+  achordion_task();
 }
 
 const key_override_t delete_key_override = 
     ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
 
-const key_override_t *key_overrides[] = {
-	&delete_key_override
+const key_override_t **key_overrides = (const key_override_t*[]){
+    &delete_key_override,
+    NULL  // Array must be NULL terminated
 };
+
+
+uint16_t achordion_streak_chord_timeout(
+    uint16_t tap_hold_keycode, uint16_t next_keycode) {
+  return 200;  // Default of 100 ms.
+}
+
+uint16_t achordion_streak_chord_timeout(
+    uint16_t tap_hold_keycode, uint16_t next_keycode) {
+  if (IS_QK_LAYER_TAP(tap_hold_keycode)) {
+    return 0;  // Disable streak detection on layer-tap keys.
+  }
+
+  // Otherwise, tap_hold_keycode is a mod-tap key.
+  uint8_t mod = mod_config(QK_MOD_TAP_GET_MODS(tap_hold_keycode));
+  if ((mod & MOD_LSFT) != 0) {
+    return 100;  // A shorter streak timeout for Shift mod-tap keys.
+  } else {
+    return 240;  // A longer timeout otherwise.
+  }
+}
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [0] = LAYOUT_voyager(
