@@ -1,6 +1,5 @@
 #include QMK_KEYBOARD_H
 #include "version.h"
-#include "features/achordion.h"
 #define MOON_LED_LEVEL LED_LEVEL
 #define ML_SAFE_RANGE SAFE_RANGE
 
@@ -13,9 +12,6 @@ enum custom_keycodes {
   ST_MACRO_1,
 };
 
-void matrix_scan_user(void) {
-  achordion_task();
-}
 
 const key_override_t delete_key_override = 
     ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
