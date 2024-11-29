@@ -14,8 +14,16 @@ enum custom_keycodes {
 };
 
 void matrix_scan_user(void) {
-  achordion_task();
+  // DISABLING ACHORDION FOR NOW AS IT BREAKS HOMEROW MODIFIERS FOR ME
+  // achordion_task();
 }
+
+const key_override_t delete_key_override = 
+    ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
+
+const key_override_t *key_overrides[] = {
+	&delete_key_override
+};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [0] = LAYOUT_voyager(
